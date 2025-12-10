@@ -1,10 +1,12 @@
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import {
   GoogleAuthProvider,
   signInWithPopup,
   GithubAuthProvider,
   TwitterAuthProvider,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import auth from "../firebase/config";
@@ -13,6 +15,8 @@ import auth from "../firebase/config";
 const AuthContext = createContext(null);
 
 const MyLayout = () => {
+  const [user, setUser] = useState(null);
+
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   const twitterProvider = new TwitterAuthProvider();
@@ -21,6 +25,7 @@ const MyLayout = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log(result);
+        setUser(result.user);
       })
       .catch((error) => {
         console.log(error);
@@ -31,14 +36,27 @@ const MyLayout = () => {
     signInWithPopup(auth, githubProvider)
       .then((result) => {
         console.log(result);
+        setUser(result.user);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        console.log(error.code);
+      });
+  };
+
+  const handleTwitterLogin = () => {
+    signInWithPopup(auth, twitterProvider)
+      .then((result) => {
+        console.log(result);
+        setUser(result.user);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const handleTwitterLogin = () => {
-    signInWithPopup(auth, twitterProvider)
+  const handleSignOut = () => {
+    signOut(auth)
       .then((result) => console.log(result))
       .catch((error) => {
         console.log(error);
@@ -49,13 +67,31 @@ const MyLayout = () => {
     handleGoogleLogin,
     handleGithubLogin,
     handleTwitterLogin,
+    handleSignOut,
+    user,
+    setUser,
   };
+
+  useEffect(() => {
+    console.log("state change result", user);
+  }, [user]);
+
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log(currentUser);
+      setUser(currentUser);
+    });
+
+    return () => {
+      unSubscribe();
+    };
+  }, []);
 
   return (
     <div className="w-5/6 mx-auto my-10">
-      <AuthContext value={authData}>
+      <AuthContext.Provider value={authData}>
         <Outlet></Outlet>
-      </AuthContext>
+      </AuthContext.Provider>
     </div>
   );
 };
