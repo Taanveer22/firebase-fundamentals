@@ -8,10 +8,12 @@ import {
 import auth from "../firebase/config";
 
 const Home = () => {
+  // step 01
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   const twitterProvider = new TwitterAuthProvider();
 
+  // step 02
   const handleGoogleLogin = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
@@ -41,6 +43,7 @@ const Home = () => {
   };
   return (
     <div>
+      {/* step 03 */}
       <button onClick={handleGoogleLogin} className="bg-red-500 p-3">
         Login with google
       </button>
