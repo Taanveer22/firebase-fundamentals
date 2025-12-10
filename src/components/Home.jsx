@@ -1,46 +1,10 @@
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  GithubAuthProvider,
-  TwitterAuthProvider,
-} from "firebase/auth";
-
-import auth from "../firebase/config";
+import { useContext } from "react";
+import { AuthContext } from "../layouts/MyLayout";
 
 const Home = () => {
-  // step 01
-  const googleProvider = new GoogleAuthProvider();
-  const githubProvider = new GithubAuthProvider();
-  const twitterProvider = new TwitterAuthProvider();
+  const { handleGoogleLogin, handleGithubLogin, handleTwitterLogin } =
+    useContext(AuthContext);
 
-  // step 02
-  const handleGoogleLogin = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleGithubLogin = () => {
-    signInWithPopup(auth, githubProvider)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleTwitterLogin = () => {
-    signInWithPopup(auth, twitterProvider)
-      .then((result) => console.log(result))
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   return (
     <div>
       {/* step 03 */}
