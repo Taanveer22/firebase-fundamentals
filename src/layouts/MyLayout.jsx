@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -7,6 +7,7 @@ import {
   TwitterAuthProvider,
   signOut,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 import auth from "../firebase/config";
@@ -63,6 +64,12 @@ const MyLayout = () => {
       });
   };
 
+  const handleSignUp = (email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => console.log(result.user))
+      .catch((error) => console.log(error.message));
+  };
+
   const authData = {
     handleGoogleLogin,
     handleGithubLogin,
@@ -70,6 +77,7 @@ const MyLayout = () => {
     handleSignOut,
     user,
     setUser,
+    handleSignUp,
   };
 
   useEffect(() => {
@@ -90,6 +98,20 @@ const MyLayout = () => {
   return (
     <div className="w-5/6 mx-auto my-10">
       <AuthContext.Provider value={authData}>
+        <ul className="flex gap-5 items-center my-5">
+          <li className="bg-purple-500 p-1 rounded-md">
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li className="bg-purple-500 p-1 rounded-md">
+            <NavLink to="/about">About</NavLink>
+          </li>
+          <li className="bg-purple-500 p-1 rounded-md">
+            <NavLink to="/signup">Signup</NavLink>
+          </li>
+          <li className="bg-purple-500 p-1 rounded-md">
+            <NavLink to="/login">login</NavLink>
+          </li>
+        </ul>
         <Outlet></Outlet>
       </AuthContext.Provider>
     </div>
