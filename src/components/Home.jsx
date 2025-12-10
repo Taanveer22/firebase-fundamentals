@@ -2,6 +2,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   GithubAuthProvider,
+  TwitterAuthProvider,
 } from "firebase/auth";
 
 import auth from "../firebase/config";
@@ -9,6 +10,7 @@ import auth from "../firebase/config";
 const Home = () => {
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
+  const twitterProvider = new TwitterAuthProvider();
 
   const handleGoogleLogin = () => {
     signInWithPopup(auth, googleProvider)
@@ -29,6 +31,14 @@ const Home = () => {
         console.log(error);
       });
   };
+
+  const handleTwitterLogin = () => {
+    signInWithPopup(auth, twitterProvider)
+      .then((result) => console.log(result))
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div>
       <button onClick={handleGoogleLogin} className="bg-red-500 p-3">
@@ -37,6 +47,10 @@ const Home = () => {
       <br /> <br />
       <button onClick={handleGithubLogin} className="bg-green-500 p-3">
         Login with github
+      </button>
+      <br /> <br />
+      <button onClick={handleTwitterLogin} className="bg-blue-500 p-3">
+        Login with twitter
       </button>
       <br /> <br />
     </div>
