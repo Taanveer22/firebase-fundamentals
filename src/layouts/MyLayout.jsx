@@ -19,12 +19,14 @@ const AuthContext = createContext(null);
 
 const MyLayout = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   const twitterProvider = new TwitterAuthProvider();
 
   const handleGoogleLogin = () => {
+    setLoading(true);
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log(result);
@@ -36,6 +38,7 @@ const MyLayout = () => {
   };
 
   const handleGithubLogin = () => {
+    setLoading(true);
     signInWithPopup(auth, githubProvider)
       .then((result) => {
         console.log(result);
@@ -48,6 +51,7 @@ const MyLayout = () => {
   };
 
   const handleTwitterLogin = () => {
+    setLoading(true);
     signInWithPopup(auth, twitterProvider)
       .then((result) => {
         console.log(result);
@@ -59,6 +63,7 @@ const MyLayout = () => {
   };
 
   const handleSignOut = () => {
+    setLoading(true);
     signOut(auth)
       .then((result) => console.log(result))
       .catch((error) => {
@@ -67,12 +72,14 @@ const MyLayout = () => {
   };
 
   const handleSignUp = (email, password) => {
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => console.log(result.user))
       .catch((error) => console.log(error.message));
   };
 
   const handleLogIn = (email, password) => {
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => console.log(result.user))
       .catch((error) => console.log(error.message));
@@ -87,6 +94,7 @@ const MyLayout = () => {
     setUser,
     handleSignUp,
     handleLogIn,
+    loading,
   };
 
   useEffect(() => {
@@ -96,7 +104,12 @@ const MyLayout = () => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log(currentUser);
-      setUser(currentUser);
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
     });
 
     return () => {
