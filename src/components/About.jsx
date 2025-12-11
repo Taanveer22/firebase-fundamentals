@@ -1,9 +1,13 @@
 import { useContext } from "react";
 import { AuthContext } from "../layouts/MyLayout";
+import { Navigate } from "react-router-dom";
 
 const About = () => {
   const { handleGoogleLogin, handleSignOut, user } = useContext(AuthContext);
   console.log(user);
+  if (!user) {
+    return <Navigate to="/login"></Navigate>;
+  }
 
   return (
     <div>

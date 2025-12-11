@@ -4,6 +4,7 @@ import Home from "../components/Home";
 import About from "../components/About";
 import SignUp from "../components/SignUp";
 import Login from "../components/Login";
+import Profile from "../components/Profile";
 
 const MyRouter = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const MyRouter = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>,
+      },
+      {
+        path: "/profile",
+        element: <Profile></Profile>,
       },
     ],
   },

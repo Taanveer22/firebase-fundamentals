@@ -16,6 +16,9 @@ const Login = () => {
   };
   return (
     <>
+      <h1 className="text-2xl font-medium text-center mb-5">
+        Welcome to Login Page
+      </h1>
       <form onSubmit={handleFormSubmit}>
         <label>Email:</label>
         <input
